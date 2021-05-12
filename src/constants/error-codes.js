@@ -1,0 +1,3 @@
+export default {
+    E_USER_ALREADY_EXISTS: 'E_USER_ALREADY_EXISTS',
+}
