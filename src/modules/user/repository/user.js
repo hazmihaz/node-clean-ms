@@ -8,25 +8,15 @@ class UserRepository extends BaseRepository {
 
     async create(user) {
         try {
-            const item = await userModel.create(user)
+            const item = await this.model.create(user)
             if (item) {
                 return {
-                    error: false,
                     data: item,
                 }
             }
         } catch (e) {
-            if (e?.code === 11000) {
-                return {
-                    error: true,
-                    statusCode: 500,
-                    message: errorCodes.E_USER_ALREADY_EXISTS,
-                }
-            }
             return {
-                error: true,
-                statusCode: 500,
-                message: e || 'Error creating new item.',
+                error: e || 'Error creating new item.',
             }
         }
     }

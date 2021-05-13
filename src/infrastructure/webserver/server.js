@@ -1,10 +1,13 @@
 import express from 'express'
+import 'express-async-errors'
 import cors from 'cors'
 import config from '@/config'
+import BaseController from '@/modules/base/base-controller'
 
 export default async (routesV1, logger) => {
     const app = express()
     const port = config.PORT || 6000
+    const baseController = new BaseController()
 
     /**
      * Enable cors on all actions
@@ -34,12 +37,9 @@ export default async (routesV1, logger) => {
      * Global error catcher.
      */
     app.use((err, req, res, next) => {
+        logger.error(err.stack)
         res.status(err.status || 500)
-        res.json({
-            errors: {
-                message: err.message,
-            },
-        })
+        res.json(baseController.returnErr(err))
     })
 
     /**

@@ -4,15 +4,15 @@ import { User } from '@/domains'
 const authUsecase = ({ userRepository, logger }) => {
     return {
         async loginWithUsername(username, password) {
-            const { list, error } = await userRepository.find({ username })
-            if (error || !list.length) {
+            const { data, error } = await userRepository.find({ username })
+            if (error || !data.length) {
                 return {
                     error: true,
                     message: 'Username or password is incorrect',
                 }
             }
 
-            const user = new User(list[0])
+            const user = new User(data[0])
             const validPassword = await verifyPassword(password, user.password)
             if (!validPassword) {
                 return {
@@ -25,15 +25,15 @@ const authUsecase = ({ userRepository, logger }) => {
         },
 
         async loginWithEmail(email, password) {
-            const { list, error } = await userRepository.find({ email })
-            if (error || !list.length) {
+            const { data, error } = await userRepository.find({ email })
+            if (error || !data.length) {
                 return {
                     error: true,
                     message: 'Email or password is incorrect',
                 }
             }
 
-            const user = new User(list[0])
+            const user = new User(data[0])
             const validPassword = await verifyPassword(password, user.password)
             if (!validPassword) {
                 return {
@@ -52,9 +52,7 @@ const authUsecase = ({ userRepository, logger }) => {
             })
 
             const result = await userRepository.create(newUser)
-            if (result.error) {
-                return result
-            }
+            if (result.error) throw result.error
 
             return new User(result.data)
         },

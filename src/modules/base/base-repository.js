@@ -18,45 +18,33 @@ class BaseRepository {
             }
         } catch (e) {
             return {
-                error: true,
-                message: e || 'Error get item.',
+                error: e || 'Error get item.',
             }
         }
     }
 
-    async find(query = {}) {
+    async find({ page, skip, limit, ...query }) {
         try {
-            let { skip, limit } = query
-            skip = skip ? Number(skip) : 0
-            limit = limit ? Number(limit) : 10
-            delete query.skip
-            delete query.limit
-
             const items = await this.model.find(query).skip(skip).limit(limit)
             return {
                 data: items,
             }
         } catch (e) {
             return {
-                error: true,
-                message: e || 'Error finding item.',
+                error: e || 'Error finding item.',
             }
         }
     }
 
-    async count(query = {}) {
+    async count({ page, skip, limit, ...query }) {
         try {
-            delete query.skip
-            delete query.limit
-
             const count = await this.model.countDocuments(query)
             return {
                 data: count,
             }
         } catch (e) {
             return {
-                error: true,
-                message: e || 'Error finding item.',
+                error: e || 'Error finding item.',
             }
         }
     }
