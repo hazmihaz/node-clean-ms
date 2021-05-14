@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import BaseController from '@/modules/base/base-controller'
-import isAuthMiddleware from '@/modules/auth/middleware/isAuth'
+import isAuthMiddleware from '@/modules/auth/middleware/is-auth'
 
 class UserController extends BaseController {
     constructor({ userUsecase }) {
