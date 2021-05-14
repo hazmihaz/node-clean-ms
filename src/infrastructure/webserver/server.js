@@ -38,7 +38,7 @@ export default async (routesV1, logger) => {
      */
     app.use((err, req, res, next) => {
         logger.error(err.stack)
-        res.status(err.status || 500)
+        res.status(err.statusCode || 500)
         res.json(baseController.returnErr(err))
     })
 
