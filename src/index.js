@@ -7,6 +7,7 @@ import DB from '@/infrastructure/mongo/connection'
 import Model from '@/infrastructure/mongo/model'
 import EventBus from '@/infrastructure/eventbus/eventbus'
 import Server from '@/infrastructure/webserver/server'
+import Mailer from '@/infrastructure/mailer/mailer'
 
 import userSchema from '@/domains/user/schema/mongo-user'
 
@@ -21,6 +22,7 @@ import AuthController from '@/modules/auth/controllers/auth'
 async function start() {
     DB(logger)
     const eventBus = new EventBus()
+    const mailer = new Mailer()
 
     const userModel = Model(userSchema)
     const userRepository = new UserRepository(userModel)
