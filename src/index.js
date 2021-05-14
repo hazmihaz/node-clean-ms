@@ -5,6 +5,7 @@ import '@/config'
 import logger from '@/infrastructure/logger/logger'
 import DB from '@/infrastructure/mongo/connection'
 import Model from '@/infrastructure/mongo/model'
+import EventBus from '@/infrastructure/eventbus'
 import Server from '@/infrastructure/webserver/server'
 
 import userSchema from '@/domains/user/schema/mongo-user'
@@ -19,6 +20,7 @@ import AuthController from '@/modules/auth/controllers/auth'
 
 async function start() {
     DB(logger)
+    const eventBus = new EventBus()
 
     const userModel = Model(userSchema)
     const userRepository = new UserRepository(userModel)
