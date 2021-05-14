@@ -10,10 +10,8 @@ export default (logger) => {
     mongoose.pluralize(null)
 
     const db = mongoose.connection
-    db.on('error', console.error.bind(console, 'connection error:'))
-    db.once('open', function () {
-        logger.info('Mongodb connected')
-    })
+    db.on('error', (e) => logger.error('Mongodb connection error:', e))
+    db.once('open', () => logger.info('Mongodb connected'))
 
     return db
 }
