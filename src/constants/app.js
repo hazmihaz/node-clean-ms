@@ -9,6 +9,9 @@ const app = {
             general: baseEmailTemplate + 'general.hbs',
         },
     },
+    events: {
+        USER_REGISTERED: 'USER_REGISTERED',
+    },
 }
 
 export default app

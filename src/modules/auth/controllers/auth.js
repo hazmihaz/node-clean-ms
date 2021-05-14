@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import Joi from 'joi'
+import App from '@/constants/app'
 import { User } from '@/domains'
 import BaseController from '@/modules/base/base-controller'
-
+import EventBus from '@/infrastructure/eventbus/eventbus'
 class AuthController extends BaseController {
     constructor({ authUsecase }) {
         super()
@@ -43,6 +44,7 @@ class AuthController extends BaseController {
         }
         try {
             const result = await this.authUsecase.register(user)
+            EventBus.emit(App.events.USER_REGISTERED, result)
             return res.json(this.returnOk(result))
         } catch (e) {
             if (e.code === 11000) {
@@ -58,44 +60,3 @@ class AuthController extends BaseController {
 }
 
 export default AuthController
-
-// const authController = ({ authUsecase }) => {
-//     const router = Router()
-
-//     router.get('/login', async (req, res) => {
-//         let { username, password } = req.body
-//         let result
-
-//         try {
-//             await Joi.assert(username, Joi.string().email())
-//             result = await authUsecase.loginWithEmail(username, password)
-//         } catch (e) {
-//             result = await authUsecase.loginWithUsername(username, password)
-//         }
-
-//         res.json({
-//             data: result,
-//         })
-//     })
-
-//     router.post('/register', async (req, res) => {
-//         const user = new User(req.body)
-
-//         const valid = user.validate()
-//         if (valid.error) {
-//             return res.status(500).json(valid)
-//         }
-
-//         const result = await authUsecase.register(user)
-//         if (result.error) {
-//             return res.status(500).json(result)
-//         }
-//         res.json({
-//             data: result,
-//         })
-//     })
-
-//     return router
-// }
-
-// export default authController

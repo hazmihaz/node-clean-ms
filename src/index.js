@@ -5,9 +5,7 @@ import '@/config'
 import logger from '@/infrastructure/logger/logger'
 import DB from '@/infrastructure/mongo/connection'
 import Model from '@/infrastructure/mongo/model'
-import EventBus from '@/infrastructure/eventbus/eventbus'
 import Server from '@/infrastructure/webserver/server'
-import Mailer from '@/infrastructure/mailer/mailer'
 
 import userSchema from '@/domains/user/schema/mongo-user'
 
@@ -19,10 +17,11 @@ import _adminUserController from '@/modules/user/controllers/admin-user'
 import _authUsecase from '@/modules/auth/usecases/auth'
 import AuthController from '@/modules/auth/controllers/auth'
 
+import NotificationController from '@/modules/notification/controllers/notification'
+
 async function start() {
     DB(logger)
-    const eventBus = new EventBus()
-    const mailer = new Mailer()
+    const notificationController = new NotificationController()
 
     const userModel = Model(userSchema)
     const userRepository = new UserRepository(userModel)
@@ -35,6 +34,7 @@ async function start() {
 
     const v1 = Router()
     v1.use('/auth', authController.getRouter())
+    v1.use('/notification', notificationController.getRouter())
     v1.use('/user', userController.getRouter())
     v1.use('/admin/user', adminUserController)
 

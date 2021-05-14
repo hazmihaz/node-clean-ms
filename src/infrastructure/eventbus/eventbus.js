@@ -1,17 +1,13 @@
 import { EventEmitter } from 'events'
 
-class EventBus {
-    eventEmitter = new EventEmitter()
+const eventEmitter = new EventEmitter()
 
-    emit(event, data) {
-        this.eventEmitter.emit(event, data)
-    }
-
-    on(event, cb) {
-        this.eventEmitter.on(event, cb)
-    }
-
-    USER_REGISTER = 'USER_REGISTER'
+const emit = (event, data) => {
+    eventEmitter.emit(event, data)
 }
 
-export default EventBus
+const on = (event, cb) => {
+    eventEmitter.on(event, cb)
+}
+
+export default { emit, on }
