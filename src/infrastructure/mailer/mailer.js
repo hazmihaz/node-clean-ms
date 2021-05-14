@@ -29,7 +29,6 @@ const template = (handlebars) => {
                 const t = handlebars.compile(body)
                 items[path] = t
             }
-            console.log('ITEMSZ', items)
             return items[path](content)
         },
     }
